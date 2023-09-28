@@ -127,8 +127,7 @@ const forgotPassword = async (req, res) => {
     console.log("User data -->", userData);
     if (userData) {
       const randomString = randomstring.generate();
-      const timestamp = Date.now().toString();
-      const token = randomString + timestamp;
+      const token = randomString;
       const data = await User.updateOne(
         { name: name },
         { $set: { token: token } }
@@ -158,7 +157,9 @@ const securePassword = async (password) => {
 const resetPassword = async (req, res) => {
   try {
     const token = req.query.token;
-    const tokenData = await User.findOne({ token: token, email: email });
+    console.log('toekn :', token);
+    
+    const tokenData = await User.findOne({ token: token});
     console.log("token data -->", tokenData);
     if (tokenData) {
       const password = req.body.password;
